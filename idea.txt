@@ -1,0 +1,1 @@
+A full autonomous bot/ai python program that can generate ebooks and photos using any models in combination with one another. THis will generate and save ebooks compiled into a proper ebook.
