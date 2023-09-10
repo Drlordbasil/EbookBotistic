@@ -30,13 +30,15 @@ class EbookGenerator:
         ebook.add_item(epub.EpubNcx())
         ebook.add_item(epub.EpubNav())
 
-        ebook.spine = ['nav'] + [model.get_spine_element() for model in self.model_list]
+        ebook.spine = ['nav'] + [model.get_spine_element()
+                                 for model in self.model_list]
 
         filename = self._save_ebook_file(ebook)
         return filename
 
     def _save_ebook_file(self, ebook):
-        filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8)) + '.epub'
+        filename = ''.join(random.choices(
+            string.ascii_lowercase + string.digits, k=8)) + '.epub'
         epub.write_epub(filename, ebook, {})
         return filename
 
@@ -48,7 +50,7 @@ class PhotoGenerator:
     def generate_photo(self):
         ia.seed(1)
         image = Image.open('input_image.jpg')
-        
+
         for model in self.model_list:
             image = model.apply_augmentation(image)
 
@@ -56,7 +58,8 @@ class PhotoGenerator:
         return filename
 
     def _save_photo(self, image):
-        filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8)) + '.jpg'
+        filename = ''.join(random.choices(
+            string.ascii_lowercase + string.digits, k=8)) + '.jpg'
         image.save(filename)
         return filename
 
@@ -68,7 +71,8 @@ class EpubModel:
 
     def generate_output(self):
         ebook_html = f'<html><body><h1>{self.title}</h1><p>{self.content}</p></body></html>'
-        ebook_item = epub.EpubHtml(title=self.title, file_name=f'{self.title}.xhtml', content=ebook_html)
+        ebook_item = epub.EpubHtml(
+            title=self.title, file_name=f'{self.title}.xhtml', content=ebook_html)
         return ebook_item
 
     def get_nav_element(self):
@@ -99,7 +103,8 @@ class EbookPhotoGenerator:
         self.photo_generator = PhotoGenerator(photo_model_list)
 
     def generate_ebook_and_photo(self, ebook_title, ebook_content):
-        ebook_filename = self.ebook_generator.generate_ebook(ebook_title, ebook_content)
+        ebook_filename = self.ebook_generator.generate_ebook(
+            ebook_title, ebook_content)
         photo_filename = self.photo_generator.generate_photo()
 
         return ebook_filename, photo_filename
@@ -109,7 +114,8 @@ if __name__ == '__main__':
     ebook_models = [
         EpubModel('Chapter 1', 'Lorem ipsum dolor sit amet'),
         EpubModel('Chapter 2', 'Consectetur adipiscing elit'),
-        EpubModel('Chapter 3', 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua')
+        EpubModel(
+            'Chapter 3', 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua')
     ]
 
     photo_models = [
@@ -119,7 +125,8 @@ if __name__ == '__main__':
     ]
 
     generator = EbookPhotoGenerator(ebook_models, photo_models)
-    generated_ebook, generated_photo = generator.generate_ebook_and_photo('My Ebook', 'This is the content of my ebook')
+    generated_ebook, generated_photo = generator.generate_ebook_and_photo(
+        'My Ebook', 'This is the content of my ebook')
 
     print(f"Ebook generated: {generated_ebook}")
     print(f"Photo generated: {generated_photo}")
