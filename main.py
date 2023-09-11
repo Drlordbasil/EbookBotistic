@@ -1,7 +1,6 @@
 import os
 import random
 import string
-import imgaug as ia
 import imgaug.augmenters as iaa
 from PIL import Image
 from ebooklib import epub
@@ -88,11 +87,11 @@ class PhotoModel:
 
     def apply_augmentation(self, image):
         if self.augmentation_name == 'rotate':
-            return iaa.rotate(image, angle=45)
+            return iaa.Affine(rotate=45)(image)
         elif self.augmentation_name == 'flip':
-            return iaa.flip(image)
+            return iaa.Fliplr()(image)
         elif self.augmentation_name == 'contrast':
-            return iaa.contrast_normalize(image)
+            return iaa.ContrastNormalization()(image)
         else:
             return image
 
